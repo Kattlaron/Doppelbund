@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doppelbund</title>
+  <link rel="stylesheet" href="/static/style.css?v=connection-status-1">
+</head>
+<body>
+  <main id="menu-view" class="app menu-view">
+    <header>
+      <div>
+        <h1>Doppelbund</h1>
+        <p class="subtitle">Erstelle einen Tisch oder tritt einem bestehenden Spiel bei.</p>
+      </div>
+    </header>
+    <section class="menu-grid">
+      <div class="panel">
+        <h2>Neues Spiel erstellen</h2>
+        <label class="field-label" for="player-name">Dein Name</label>
+        <input id="player-name" class="text-input" value="Spieler" maxlength="24">
+        <div class="menu-actions">
+          <button id="create-ai" class="secondary">Gegen KI spielen</button>
+          <button id="create-human" class="secondary">Tisch erstellen</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Bestehendem Tisch beitreten</h2>
+        <label class="field-label" for="table-id">Tisch-Code</label>
+        <input id="table-id" class="text-input" placeholder="z. B. a1b2c3d4" maxlength="8">
+        <button id="join-table" class="secondary">Beitreten</button>
+      </div>
+    </section>
+    <section class="panel table-list-panel">
+      <div class="table-list-header">
+        <h2>Offene Tische</h2>
+        <button id="refresh-tables" class="secondary">Aktualisieren</button>
+      </div>
+      <div id="table-list" class="table-list"></div>
+    </section>
+    <p id="menu-status" class="menu-status"></p>
+  </main>
+
+  <main id="game-view" class="app" hidden>
+    <header>
+      <div>
+        <h1>Doppelbund</h1>
+      </div>
+      <button id="new-game" class="secondary">Neues Spiel</button>
+    </header>
+
+    <section class="layout">
+      <div class="game-column">
+        <div class="table">
+        <div id="player-area-2" class="player-area player-top team-unknown">
+          <div class="played-slot" id="played-2"></div>
+          <div class="opponent"><span id="name-2">Ben</span><small class="player-status" id="status-2"></small><b id="count-2">11 Karten</b><div class="opponent-hand" id="opponent-hand-2"></div></div>
+        </div>
+        <div id="player-area-1" class="player-area player-left team-unknown">
+          <div class="played-slot" id="played-1"></div>
+          <div class="opponent"><span id="name-1">Anna</span><small class="player-status" id="status-1"></small><b id="count-1">11 Karten</b><div class="opponent-hand" id="opponent-hand-1"></div></div>
+        </div>
+        <div id="player-area-3" class="player-area player-right team-unknown">
+          <div class="played-slot" id="played-3"></div>
+          <div class="opponent"><span id="name-3">Clara</span><small class="player-status" id="status-3"></small><b id="count-3">11 Karten</b><div class="opponent-hand" id="opponent-hand-3"></div></div>
+        </div>
+        <div class="status" id="status">Verbinde …</div>
+        <div id="player-area-0" class="player-area player-bottom team-unknown">
+          <div class="played-slot" id="played-0"></div>
+          <div class="opponent you"><span id="name-0">Du</span><small class="player-status" id="status-0"></small><b id="count-0">11 Karten</b><div class="opponent-hand" id="opponent-hand-0"></div></div>
+        </div>
+        </div>
+        <section class="hand-section">
+          <h2>Deine Hand</h2>
+          <div id="hand" class="hand"></div>
+          <p class="hint">Klicke eine leuchtende Karte. Schwarz und Rot sind Trumpf.</p>
+        </section>
+      </div>
+
+      <aside>
+        <div class="panel">
+          <h2>Spielstand</h2>
+          <div id="scores" class="scores"></div>
+        </div>
+        <div class="panel">
+          <h2>Dein Auftrag</h2>
+          <div id="goal-status" class="goal-status">Noch nicht gewählt</div>
+        </div>
+        <div class="panel">
+          <h2>Protokoll</h2>
+          <ul id="history"></ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div id="result-modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <button id="close-result" class="modal-close" aria-label="Ergebnis schließen">×</button>
+      <div id="result-content"></div>
+    </div>
+  </div>
+  <div id="goal-modal" class="modal" hidden>
+    <div class="modal-card goal-modal-card" role="dialog" aria-modal="true" aria-labelledby="goal-title">
+      <div id="goal-content"></div>
+    </div>
+  </div>
+  <script src="/static/app.js?v=ui-3"></script>
+</body>
+</html>
