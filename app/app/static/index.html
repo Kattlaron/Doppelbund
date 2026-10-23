@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Doppelbund</title>
+  <link rel="stylesheet" href="/static/style.css?v=settings-1">
+</head>
+<body>
+  <main id="menu-view" class="app menu-view">
+    <header>
+      <div>
+        <h1>Doppelbund</h1>
+        <p class="subtitle">Erstelle einen Tisch oder tritt einem bestehenden Spiel bei.</p>
+      </div>
+      <button id="help-menu" class="secondary">Spielregeln</button>
+    </header>
+    <section class="menu-grid">
+      <div class="panel">
+        <h2>Neues Spiel erstellen</h2>
+        <label class="field-label" for="player-name">Dein Name</label>
+        <input id="player-name" class="text-input" value="Spieler" maxlength="24">
+        <div class="menu-actions">
+          <button id="create-ai" class="secondary">Gegen KI spielen</button>
+          <button id="create-human" class="secondary">Tisch erstellen</button>
+        </div>
+      </div>
+      <div class="panel">
+        <h2>Bestehendem Tisch beitreten</h2>
+        <label class="field-label" for="table-id">Tisch-Code</label>
+        <input id="table-id" class="text-input" placeholder="z. B. a1b2c3d4" maxlength="8">
+        <button id="join-table" class="secondary">Beitreten</button>
+      </div>
+    </section>
+    <section class="panel settings-panel" aria-labelledby="settings-title">
+      <h2 id="settings-title">Einstellungen</h2>
+      <p class="subtitle">Gelten für neu erstellte Spiele. Bei bestehenden Tischen gelten die Einstellungen des Erstellers.</p>
+      <div class="settings-options">
+        <label class="settings-option" for="setting-goals">
+          <span><strong>Aufträge verwenden</strong><small>Spieler wählen zu Beginn jeder Partie einen Auftrag.</small></span>
+          <input id="setting-goals" type="checkbox" checked>
+        </label>
+        <label class="settings-option" for="setting-events">
+          <span><strong>Events verwenden</strong><small>Jede Partie erhält ein zufälliges Event.</small></span>
+          <input id="setting-events" type="checkbox" checked>
+        </label>
+      </div>
+    </section>
+    <section class="panel table-list-panel">
+      <div class="table-list-header">
+        <h2>Offene Tische</h2>
+        <button id="refresh-tables" class="secondary">Aktualisieren</button>
+      </div>
+      <div id="table-list" class="table-list"></div>
+    </section>
+    <p id="menu-status" class="menu-status"></p>
+  </main>
+
+  <main id="game-view" class="app" hidden>
+    <header>
+      <div>
+        <h1>Doppelbund</h1>
+      </div>
+      <div class="header-actions">
+        <button id="help-game" class="secondary">Spielregeln</button>
+        <button id="next-round-top" class="secondary" hidden>Nächste Partie</button>
+        <button id="new-game" class="secondary">Neues Spiel</button>
+        <span id="debug-indicator" class="debug-indicator" hidden>DEBUG</span>
+      </div>
+    </header>
+
+    <section class="layout">
+      <div class="game-column">
+        <section id="event-banner" class="event-banner" hidden aria-live="polite">
+          <div class="event-heading"><span>EVENT</span><strong id="event-name"></strong></div>
+          <p id="event-effect"></p>
+          <div id="debug-event-controls" class="debug-event-controls" hidden>
+            <label for="debug-event-select">Event im Debug-Modus testen</label>
+            <select id="debug-event-select" class="debug-event-select"></select>
+            <small id="debug-event-note"></small>
+          </div>
+        </section>
+        <div class="table">
+        <div id="player-area-2" class="player-area player-top team-unknown">
+          <div class="played-slot" id="played-2"></div>
+          <div class="opponent"><span id="name-2">Ben</span><small class="player-status" id="status-2"></small><b id="count-2">11 Karten</b><div class="opponent-hand" id="opponent-hand-2"></div></div>
+        </div>
+        <div id="player-area-1" class="player-area player-left team-unknown">
+          <div class="played-slot" id="played-1"></div>
+          <div class="opponent"><span id="name-1">Anna</span><small class="player-status" id="status-1"></small><b id="count-1">11 Karten</b><div class="opponent-hand" id="opponent-hand-1"></div></div>
+        </div>
+        <div id="player-area-3" class="player-area player-right team-unknown">
+          <div class="played-slot" id="played-3"></div>
+          <div class="opponent"><span id="name-3">Clara</span><small class="player-status" id="status-3"></small><b id="count-3">11 Karten</b><div class="opponent-hand" id="opponent-hand-3"></div></div>
+        </div>
+        <div class="status" id="status">Verbinde …</div>
+        <div id="player-area-0" class="player-area player-bottom team-unknown">
+          <div class="played-slot" id="played-0"></div>
+          <div class="opponent you"><span id="name-0">Du</span><small class="player-status" id="status-0"></small><b id="count-0">11 Karten</b><div class="opponent-hand" id="opponent-hand-0"></div></div>
+        </div>
+        <div id="event-public-cards-0" class="event-public-cards event-near-bottom"></div>
+        <div id="event-public-cards-1" class="event-public-cards event-near-left"></div>
+        <div id="event-public-cards-2" class="event-public-cards event-near-top"></div>
+        <div id="event-public-cards-3" class="event-public-cards event-near-right"></div>
+        </div>
+        <section class="hand-section">
+          <h2>Deine Hand</h2>
+          <section id="event-action-panel" class="event-action-panel" hidden aria-live="polite">
+            <strong id="event-action-title"></strong>
+            <p id="event-action-message"></p>
+            <div id="event-action-choices" class="event-action-choices"></div>
+          </section>
+          <div id="hand" class="hand"></div>
+          <p id="game-hint" class="hint">Klicke eine leuchtende Karte. Schwarz und Rot sind Trumpf.</p>
+        </section>
+      </div>
+
+      <aside>
+        <div class="panel">
+          <h2>Spielstand</h2>
+          <div id="scores" class="scores"></div>
+        </div>
+        <div class="panel">
+          <h2>Dein Auftrag</h2>
+          <div id="goal-status" class="goal-status">Noch nicht gewählt</div>
+        </div>
+        <div class="panel">
+          <h2>Protokoll</h2>
+          <ul id="history"></ul>
+        </div>
+      </aside>
+    </section>
+  </main>
+  <div id="result-modal" class="modal" hidden>
+    <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="result-title">
+      <button id="close-result" class="modal-close" aria-label="Ergebnis schließen">×</button>
+      <div id="result-content"></div>
+    </div>
+  </div>
+  <div id="goal-modal" class="modal" hidden>
+    <div class="modal-card goal-modal-card" role="dialog" aria-modal="true" aria-labelledby="goal-title">
+      <div id="goal-content"></div>
+    </div>
+  </div>
+  <div id="help-modal" class="modal" hidden>
+    <div class="modal-card help-modal-card" role="dialog" aria-modal="true" aria-labelledby="help-title">
+      <button id="close-help" class="modal-close" aria-label="Hilfe schließen">×</button>
+      <h2 id="help-title">Doppelbund – Spielregeln</h2>
+      <div class="help-content">
+        <section>
+          <h3>Spielziel</h3>
+          <p>Gewinne wertvolle Stiche und erfülle deinen persönlichen Auftrag. Ein Spiel besteht aus vier Partien. Am Ende gewinnt der Spieler mit den meisten Siegpunkten.</p>
+        </section>
+        <section>
+          <h3>Karten und Augen</h3>
+          <p>Jede Partie wird mit 44 Karten gespielt. Von Rot, Grün, Blau und Gelb gibt es jeweils zwei Karten mit den Werten 1 bis 5. Außerdem gibt es zwei schwarze 6er und zwei schwarze 7er. Jeder Spieler erhält 11 Karten.</p>
+          <p>Normalerweise ist eine höhere Zahl stärker als eine niedrigere. Die Augen einer Karte zählen, wenn der Stichgewinner die Karten einsammelt:</p>
+          <ul>
+            <li>Wert 1: 3 Augen</li>
+            <li>Wert 2: 2 Augen</li>
+            <li>Wert 3: 1 Auge</li>
+            <li>Wert 4 und 5: 0 Augen</li>
+            <li>Schwarze Karten: 0 Augen</li>
+          </ul>
+        </section>
+        <section>
+          <h3>Trumpf und Stich</h3>
+          <p>Normalerweise sind Rot und Schwarz Trumpf. Trumpf ist stärker als jede Nicht-Trumpfkarte. Unter den Trumpfkarten gilt die Reihenfolge 7 &gt; 6 &gt; 5 &gt; 4 &gt; 3 &gt; 2 &gt; 1.</p>
+          <p>Wird eine Farbkarte ausgespielt, gewinnt die höchste Karte dieser Farbe, sofern kein Trumpf im Stich liegt. Karten anderer Farben können den Stich nicht gewinnen. Rot zählt dabei als Trumpf und nicht als normale Farbkarte.</p>
+          <p>Du musst die angespielte Farbe bedienen, wenn du eine Karte dieser Farbe hast. Wird Trumpf angespielt, musst du Trumpf spielen, falls du Trumpf besitzt. Kannst du nicht bedienen, darfst du eine beliebige Karte abwerfen oder trumpfen.</p>
+          <p>Der Gewinner nimmt alle vier Karten des Stichs und spielt den nächsten Stich an.</p>
+        </section>
+        <section>
+          <h3>Teams</h3>
+          <p>Die beiden Spieler, die jeweils eine schwarze 6 besitzen, bilden Team Schwarz. Die Teamzugehörigkeit ist zunächst geheim und wird sichtbar, sobald ein Spieler eine schwarze 6 ausspielt. Sobald beide schwarzen 6er gespielt wurden, werden die beiden übrigen Spieler als Team Hell angezeigt.</p>
+        </section>
+        <section>
+          <h3>Aufträge und Siegpunkte</h3>
+          <p>Wenn Aufträge in den Einstellungen aktiviert sind, erhält jeder Spieler zu Beginn jeder Partie zwei zufällige Aufträge und wählt einen davon aus. Der nicht gewählte Auftrag verfällt.</p>
+          <p>Erfüllst du deinen Auftrag während der Partie, wird er sofort aufgedeckt. Die angezeigte Belohnung wird dir direkt als Siegpunkte gutgeschrieben. Siegpunkte bleiben über alle vier Partien erhalten.</p>
+        </section>
+        <section>
+          <h3>Partien und Siegpunkte</h3>
+          <p>Die Augen der gewonnenen Karten werden nur in der aktuellen Partie gezählt und nach der Partie zurückgesetzt.</p>
+          <p>Das Team mit den meisten Augen gewinnt die Partie. Jedes Mitglied des Gewinnerteams erhält zusätzlich 2 Siegpunkte. Nach der vierten Partie endet das Gesamtspiel.</p>
+        </section>
+        <section>
+          <h3>Spielablauf</h3>
+          <p>Vor dem ersten Stich wird der Startspieler zufällig bestimmt. In jeder folgenden Partie wechselt der Startspieler im Uhrzeigersinn, sodass jeder Spieler einmal beginnt.</p>
+        </section>
+        <section>
+          <h3>Events</h3>
+          <p>Wenn Events in den Einstellungen aktiviert sind, gilt in jeder Partie ein zufällig ausgewähltes Event. Es wird vor Spielbeginn angezeigt. Innerhalb eines vierteiligen Matches wird kein Event wiederholt. Events können die Kartenwertung, Trumpfstärke oder Rangfolge verändern. Maßgeblich ist jeweils der angezeigte Effekt.</p>
+        </section>
+      </div>
+    </div>
+  </div>
+  <script src="/static/app.js?v=settings-1"></script>
+</body>
+</html>
