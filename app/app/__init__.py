@@ -1,1 +1,0 @@
-"""Doppelkopf prototype application."""
