@@ -10,7 +10,7 @@ let reconnectAttempt = 0;
 
 const menuView = document.querySelector("#menu-view");
 const gameView = document.querySelector("#game-view");
-const suitClass = { "Rot": "rot", "Grün": "gruen", "Blau": "blau", "Gelb": "gelb", "Schwarz": "schwarz" };
+const suitClass = { "Rot": "rot", "Grün": "gruen", "Blau": "blau", "Gelb": "gelb" };
 const settingsStorageKey = "doppelbund-game-settings";
 
 function readGameSettings() {
@@ -224,7 +224,7 @@ function renderLobby(lobby) {
     document.querySelector(`#count-${seat}`).textContent =
       joinedName ? "Beigetreten" : "Offener Platz";
     const area = document.querySelector(`#player-area-${seat}`);
-    area.classList.remove("team-black", "team-white");
+    area.classList.remove("team-attack", "team-defense");
     area.classList.add("team-unknown");
     area.querySelector(".opponent").classList.toggle("you", seat === mySeat);
     const player = lobby.players.find(item => item.seat === seat);
@@ -273,10 +273,11 @@ function render(state) {
   state.player_names.forEach((name, seat) => {
     document.querySelector(`#name-${seat}`).textContent = name;
     document.querySelector(`#count-${seat}`).textContent = `${state.hand_counts[seat]} Karten`;
+    document.querySelector(`#start-player-marker-${seat}`).hidden = seat !== state.start_player;
     const area = document.querySelector(`#player-area-${seat}`);
     const relativeSeat = (seat - mySeat + 4) % 4;
     const positionClass = ["player-bottom", "player-left", "player-top", "player-right"][relativeSeat];
-    area.classList.remove("player-bottom", "player-left", "player-top", "player-right", "team-unknown", "team-black", "team-white");
+    area.classList.remove("player-bottom", "player-left", "player-top", "player-right", "team-unknown", "team-attack", "team-defense");
     area.classList.add(positionClass, `team-${state.team_status[seat]}`);
     const eventPositionClass = [
       "event-near-bottom",
@@ -308,9 +309,14 @@ function render(state) {
   const shareButton = state.table_mode === "human"
     ? `<button id="copy-join-link" class="secondary copy-link">Beitrittslink kopieren</button>`
     : "";
-  scores.innerHTML = state.scores.map((score, seat) =>
-    `<div><span>${state.player_names[seat]}${state.revealed_black_players.includes(seat) ? " · Team Schwarz" : ""}</span><strong>${score} Augen · ${state.match_scores[seat]} SP</strong></div>`
-  ).join("") + `<hr><div><span>Partie</span><strong>${state.round_number}/${state.max_rounds}</strong></div>
+  scores.innerHTML = state.scores.map((score, seat) => {
+    const team = state.team_status[seat] === "attack"
+      ? ` · ${state.team_names[0]}`
+      : state.team_status[seat] === "defense"
+        ? ` · ${state.team_names[1]}`
+        : "";
+    return `<div><span>${state.player_names[seat]}${team}</span><strong>${score} Augen · ${state.match_scores[seat]} SP</strong></div>`;
+  }).join("") + `<hr><div><span>Partie</span><strong>${state.round_number}/${state.max_rounds}</strong></div>
     ${shareButton}`;
   wireCopyLinkButton();
 
@@ -321,8 +327,11 @@ function render(state) {
         `<div class="played-hidden-card"><small class="played-by">${state.player_names[card.player]}</small><span>?</span><small>Verdeckt</small></div>`;
       return;
     }
+    const teamCard = card.suit === "Rot" && card.rank === "6";
+    const teamCardClass = teamCard ? "team-card" : "";
+    const teamCardTitle = teamCard ? 'title="Rote 6 – Schlüsselkarte des Angriffsteams"' : "";
     document.querySelector(`#played-${card.player}`).innerHTML =
-      `<div class="card played-card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""} ${card.winner ? "winner-card" : ""}">
+      `<div class="card played-card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""} ${card.winner ? "winner-card" : ""} ${teamCardClass}" ${teamCardTitle}>
         <small class="played-by">${state.player_names[card.player]}</small><span class="rank">${card.rank}</span><small>${card.suit}</small><small class="points">${card.points} P</small>
       </div>`;
   });
@@ -333,7 +342,12 @@ function render(state) {
       ["prophecy", "reveal"].includes(state.event_action.type);
     const enabled = legal.has(card.id) || cardAction;
     const actionClass = cardAction ? "selectable" : "";
-    return `<button class="card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""} ${enabled ? "enabled" : ""} ${actionClass}" ${enabled ? "" : "disabled"} data-id="${card.id}">
+    const teamCard = card.suit === "Rot" && card.rank === "6";
+    const teamCardClass = teamCard ? "team-card" : "";
+    const teamCardAccessibility = teamCard
+      ? 'aria-label="Rote 6 – Schlüsselkarte des Angriffsteams, 0 Punkte" title="Rote 6 – Schlüsselkarte des Angriffsteams"'
+      : "";
+    return `<button class="card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""} ${teamCardClass} ${enabled ? "enabled" : ""} ${actionClass}" ${enabled ? "" : "disabled"} ${teamCardAccessibility} data-id="${card.id}">
       <span class="rank">${card.rank}</span><small>${card.suit}</small><small class="points">${card.points}${card.event_bonus ? "+1*" : ""} P</small>
     </button>`;
   }).join("");
@@ -353,7 +367,10 @@ function render(state) {
     })
   );
 
-  document.querySelector("#history").innerHTML = state.history.slice().reverse().map(item => `<li>${item}</li>`).join("");
+  document.querySelector("#history").innerHTML = state.history.slice().reverse().map(item => {
+    const startPlayerEntry = item.startsWith("Startspieler dieser Partie:");
+    return `<li${startPlayerEntry ? ' class="start-player-log-entry"' : ""}>${item}</li>`;
+  }).join("");
   renderGoalState(state);
   renderResult(state.result, state.player_names);
 }
@@ -409,7 +426,7 @@ function renderPublicEventCards(state) {
     document.querySelector(`#event-public-cards-${seat}`).innerHTML = entries.map(({ card, label }) =>
       `<div class="event-public-card">
         <small>${label}</small>
-        <div class="card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""}">
+        <div class="card suit-${suitClass[card.suit]} ${card.trump ? "trump" : ""} ${card.suit === "Rot" && card.rank === "6" ? "team-card" : ""}" ${card.suit === "Rot" && card.rank === "6" ? 'title="Rote 6 – Schlüsselkarte des Angriffsteams"' : ""}>
           <span class="rank">${card.rank}</span><small>${card.suit}</small><small class="points">${card.points} P</small>
         </div>
       </div>`
@@ -503,7 +520,8 @@ function renderResult(result, playerNames) {
     modal.hidden = true;
     return;
   }
-  const winner = result.winning_team === 0 ? "Team Schwarz" : "Team Hell";
+  const teams = result.team_names || ["Angriff", "Abwehr"];
+  const winner = teams[result.winning_team];
   const title = result.match_finished ? "Gesamtspiel beendet" : `Partie ${result.round_number} beendet`;
   const matchWinner = result.match_finished
     ? `<p class="winner">Gesamtspiel gewonnen hat: <strong>${playerNames[result.match_winner]}</strong></p>`
@@ -515,14 +533,14 @@ function renderResult(result, playerNames) {
     : "";
   content.innerHTML = `<h2 id="result-title">${title}</h2>
     <p class="winner">Partiesieger: <strong>${winner}</strong></p>
-    <p>Team Schwarz: <strong>${result.team_scores[0]} Punkte</strong> · Team Hell: <strong>${result.team_scores[1]} Punkte</strong></p>
+    <p>${teams[0]}: <strong>${result.team_scores[0]} Punkte</strong> · ${teams[1]}: <strong>${result.team_scores[1]} Punkte</strong></p>
     ${matchWinner}
     <h3>Gesamt-Siegpunkte</h3>
     <div class="result-match-scores">${result.match_scores.map((score, index) =>
       `<div><span>${playerNames[index]}</span><strong>${score}</strong></div>`
     ).join("")}</div>
     <div class="result-players">${result.players.map(item =>
-      `<div><span>${playerNames[item.player]} · ${item.team === 0 ? "Team Schwarz" : "Team Hell"}</span><strong>${item.score}</strong></div>`
+      `<div><span>${playerNames[item.player]} · ${teams[item.team]}</span><strong>${item.score}</strong></div>`
     ).join("")}</div>${revealedGoals}`;
   modal.hidden = false;
   const nextRound = document.querySelector("#next-round");

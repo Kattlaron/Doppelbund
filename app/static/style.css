@@ -71,8 +71,8 @@ button { font: inherit; touch-action: manipulation; }
 .debug-event-controls small { color: #d1d8dc; font-size: .68rem; }
 .table { height: 600px; min-height: 600px; position: relative; border: 1px solid #37516b; border-radius: 24px; background: radial-gradient(ellipse, #167258, #0c493f); box-shadow: 0 20px 60px #0005; overflow: hidden; }
 .player-area { position: absolute; display: flex; align-items: center; gap: 10px; z-index: 2; border: 3px solid #8b95a0; border-radius: 18px; padding: 5px; transition: border-color .2s, box-shadow .2s; }
-.player-area.team-black { border-color: #111820; box-shadow: 0 0 0 2px #ffffff33; }
-.player-area.team-white { border-color: #fff; box-shadow: 0 0 0 2px #0005; }
+.player-area.team-attack { border-color: #d44855; box-shadow: 0 0 0 2px #ffffff33; }
+.player-area.team-defense { border-color: #fff; box-shadow: 0 0 0 2px #0005; }
 .player-area.team-unknown { border-color: #8b95a0; }
 .player-top { top: 18px; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
 .player-left { left: 18px; top: 50%; transform: translateY(-50%); flex-direction: row-reverse; }
@@ -80,6 +80,8 @@ button { font: inherit; touch-action: manipulation; }
 .player-bottom { bottom: 18px; left: 50%; transform: translateX(-50%); flex-direction: column; }
 .opponent { background: #172334e8; border: 1px solid #58708a; padding: 9px 13px; border-radius: 12px; display: grid; gap: 4px; font-size: .88rem; text-align: center; min-width: 105px; }
 .opponent b { color: #94dec9; font-size: .75rem; font-weight: 500; }
+.start-player-marker { justify-self: center; border: 1px solid #f4cf77; border-radius: 999px; background: #594522; color: #fff0b4; padding: 2px 7px; font-size: .62rem; font-weight: 800; line-height: 1.2; }
+.start-player-marker[hidden] { display: none; }
 .player-status { font-size: .66rem; min-height: 1em; color: #aab6c5; }
 .player-status.online { color: #7ed7be; }
 .player-status.offline { color: #ffb3b3; }
@@ -112,12 +114,40 @@ aside { display: grid; gap: 20px; align-content: start; }
 .revealed-goal-list div { margin-top: 5px; color: #7ed7be; }
 ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 10px; color: #aab6c5; font-size: .82rem; }
 li { border-bottom: 1px solid #2d4058; padding-bottom: 8px; }
+li.start-player-log-entry { color: #fff0b4; font-weight: 700; }
 .hand { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; width: 100%; }
 .card { width: 100%; min-width: 0; height: 122px; border: 2px solid #ffffff88; border-radius: 11px; color: #fff; display: grid; place-items: center; align-content: center; gap: 3px; transition: transform .12s, box-shadow .12s; }
 .card[disabled] { opacity: .45; }
 .card.enabled { cursor: pointer; box-shadow: 0 0 0 2px #7ed7be, 0 8px 15px #0006; }
 .card.enabled:hover { transform: translateY(-10px); }
 .card.trump { box-shadow: inset 0 0 0 3px #f4cf77, 0 8px 15px #0005; }
+.card.team-card {
+  position: relative;
+  border: 3px solid #ffe79b;
+  outline: 2px solid #a66e24;
+  outline-offset: 1px;
+  box-shadow: inset 0 0 0 2px #fff4c7, 0 0 15px #ffd45d99, 0 8px 16px #0006;
+}
+.card.team-card::after {
+  content: "✦";
+  position: absolute;
+  top: 3px;
+  right: 3px;
+  width: 18px;
+  height: 18px;
+  display: grid;
+  place-items: center;
+  border: 1px solid #fff1bc;
+  border-radius: 50%;
+  background: #8e3b2b;
+  color: #fff0a3;
+  font-size: .72rem;
+  line-height: 1;
+  box-shadow: 0 1px 4px #3b1e15aa;
+}
+.card.team-card.enabled { box-shadow: inset 0 0 0 2px #fff4c7, 0 0 0 2px #7ed7be, 0 0 15px #ffd45d99, 0 8px 16px #0006; }
+.card.team-card.selectable { outline: 3px solid #f4cf77; outline-offset: 2px; }
+.card.team-card .rank { text-shadow: 0 0 8px #fff2a8; }
 .card .rank { font-size: 1.65rem; font-weight: 800; }
 .card small { font-size: .62rem; color: inherit; opacity: .92; }
 .card .points { font-weight: 800; }
@@ -125,7 +155,6 @@ li { border-bottom: 1px solid #2d4058; padding-bottom: 8px; }
 .suit-gruen { background: #2d9b68; }
 .suit-blau { background: #4d86d8; }
 .suit-gelb { background: #d7a927; color: #202631; }
-.suit-schwarz { background: #242b34; }
 .modal[hidden] { display: none; }
 .modal { position: fixed; inset: 0; z-index: 20; display: grid; place-items: center; padding: 20px; background: #06131dcc; backdrop-filter: blur(5px); }
 .modal-card { position: relative; width: min(460px, 100%); background: #172334; border: 1px solid #6b829b; border-radius: 18px; padding: 30px; box-shadow: 0 24px 80px #000b; }
@@ -345,11 +374,11 @@ li { border-bottom: 1px solid #2d4058; padding-bottom: 8px; }
     border: 0 !important;
     box-shadow: none !important;
   }
-  .player-area.team-black .opponent {
-    border-color: #111820;
+  .player-area.team-attack .opponent {
+    border-color: #d44855;
     box-shadow: 0 0 0 2px #ffffff33;
   }
-  .player-area.team-white .opponent {
+  .player-area.team-defense .opponent {
     border-color: #fff;
     box-shadow: 0 0 0 2px #0005;
   }
@@ -430,6 +459,7 @@ li { border-bottom: 1px solid #2d4058; padding-bottom: 8px; }
     height: 64px;
     border-radius: 7px;
   }
+  .card.team-card::after { top: 1px; right: 1px; width: 12px; height: 12px; font-size: .53rem; }
   .event-public-card .card { border-radius: 7px; }
   .played-card .rank,
   .event-public-card .card .rank { font-size: 1.25rem; }

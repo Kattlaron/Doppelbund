@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Doppelbund</title>
-  <link rel="stylesheet" href="/static/style.css?v=settings-1">
+  <link rel="stylesheet" href="/static/style.css?v=start-player-marker-1">
 </head>
 <body>
   <main id="menu-view" class="app menu-view">
@@ -83,20 +83,20 @@
         <div class="table">
         <div id="player-area-2" class="player-area player-top team-unknown">
           <div class="played-slot" id="played-2"></div>
-          <div class="opponent"><span id="name-2">Ben</span><small class="player-status" id="status-2"></small><b id="count-2">11 Karten</b><div class="opponent-hand" id="opponent-hand-2"></div></div>
+          <div class="opponent"><span id="name-2">Ben</span><span class="start-player-marker" id="start-player-marker-2" hidden>Startspieler</span><small class="player-status" id="status-2"></small><b id="count-2">11 Karten</b><div class="opponent-hand" id="opponent-hand-2"></div></div>
         </div>
         <div id="player-area-1" class="player-area player-left team-unknown">
           <div class="played-slot" id="played-1"></div>
-          <div class="opponent"><span id="name-1">Anna</span><small class="player-status" id="status-1"></small><b id="count-1">11 Karten</b><div class="opponent-hand" id="opponent-hand-1"></div></div>
+          <div class="opponent"><span id="name-1">Anna</span><span class="start-player-marker" id="start-player-marker-1" hidden>Startspieler</span><small class="player-status" id="status-1"></small><b id="count-1">11 Karten</b><div class="opponent-hand" id="opponent-hand-1"></div></div>
         </div>
         <div id="player-area-3" class="player-area player-right team-unknown">
           <div class="played-slot" id="played-3"></div>
-          <div class="opponent"><span id="name-3">Clara</span><small class="player-status" id="status-3"></small><b id="count-3">11 Karten</b><div class="opponent-hand" id="opponent-hand-3"></div></div>
+          <div class="opponent"><span id="name-3">Clara</span><span class="start-player-marker" id="start-player-marker-3" hidden>Startspieler</span><small class="player-status" id="status-3"></small><b id="count-3">11 Karten</b><div class="opponent-hand" id="opponent-hand-3"></div></div>
         </div>
         <div class="status" id="status">Verbinde …</div>
         <div id="player-area-0" class="player-area player-bottom team-unknown">
           <div class="played-slot" id="played-0"></div>
-          <div class="opponent you"><span id="name-0">Du</span><small class="player-status" id="status-0"></small><b id="count-0">11 Karten</b><div class="opponent-hand" id="opponent-hand-0"></div></div>
+          <div class="opponent you"><span id="name-0">Du</span><span class="start-player-marker" id="start-player-marker-0" hidden>Startspieler</span><small class="player-status" id="status-0"></small><b id="count-0">11 Karten</b><div class="opponent-hand" id="opponent-hand-0"></div></div>
         </div>
         <div id="event-public-cards-0" class="event-public-cards event-near-bottom"></div>
         <div id="event-public-cards-1" class="event-public-cards event-near-left"></div>
@@ -111,7 +111,7 @@
             <div id="event-action-choices" class="event-action-choices"></div>
           </section>
           <div id="hand" class="hand"></div>
-          <p id="game-hint" class="hint">Klicke eine leuchtende Karte. Schwarz und Rot sind Trumpf.</p>
+          <p id="game-hint" class="hint">Klicke eine leuchtende Karte. Rot ist Trumpf.</p>
         </section>
       </div>
 
@@ -153,26 +153,26 @@
         </section>
         <section>
           <h3>Karten und Augen</h3>
-          <p>Jede Partie wird mit 44 Karten gespielt. Von Rot, Grün, Blau und Gelb gibt es jeweils zwei Karten mit den Werten 1 bis 5. Außerdem gibt es zwei schwarze 6er und zwei schwarze 7er. Jeder Spieler erhält 11 Karten.</p>
+          <p>Jede Partie wird mit 44 Karten gespielt. Von Grün, Blau und Gelb gibt es jeweils zwei Karten mit den Werten 1 bis 5. Rot gibt es jeweils zweimal mit den Werten 1 bis 7. Jeder Spieler erhält 11 Karten.</p>
           <p>Normalerweise ist eine höhere Zahl stärker als eine niedrigere. Die Augen einer Karte zählen, wenn der Stichgewinner die Karten einsammelt:</p>
           <ul>
             <li>Wert 1: 3 Augen</li>
             <li>Wert 2: 2 Augen</li>
             <li>Wert 3: 1 Auge</li>
             <li>Wert 4 und 5: 0 Augen</li>
-            <li>Schwarze Karten: 0 Augen</li>
+            <li>Rote 6er und 7er: 0 Augen</li>
           </ul>
         </section>
         <section>
           <h3>Trumpf und Stich</h3>
-          <p>Normalerweise sind Rot und Schwarz Trumpf. Trumpf ist stärker als jede Nicht-Trumpfkarte. Unter den Trumpfkarten gilt die Reihenfolge 7 &gt; 6 &gt; 5 &gt; 4 &gt; 3 &gt; 2 &gt; 1.</p>
+          <p>Rot ist Trumpf. Trumpf ist stärker als jede Nicht-Trumpfkarte. Unter den Trumpfkarten gilt die Reihenfolge 7 &gt; 6 &gt; 5 &gt; 4 &gt; 3 &gt; 2 &gt; 1.</p>
           <p>Wird eine Farbkarte ausgespielt, gewinnt die höchste Karte dieser Farbe, sofern kein Trumpf im Stich liegt. Karten anderer Farben können den Stich nicht gewinnen. Rot zählt dabei als Trumpf und nicht als normale Farbkarte.</p>
           <p>Du musst die angespielte Farbe bedienen, wenn du eine Karte dieser Farbe hast. Wird Trumpf angespielt, musst du Trumpf spielen, falls du Trumpf besitzt. Kannst du nicht bedienen, darfst du eine beliebige Karte abwerfen oder trumpfen.</p>
           <p>Der Gewinner nimmt alle vier Karten des Stichs und spielt den nächsten Stich an.</p>
         </section>
         <section>
           <h3>Teams</h3>
-          <p>Die beiden Spieler, die jeweils eine schwarze 6 besitzen, bilden Team Schwarz. Die Teamzugehörigkeit ist zunächst geheim und wird sichtbar, sobald ein Spieler eine schwarze 6 ausspielt. Sobald beide schwarzen 6er gespielt wurden, werden die beiden übrigen Spieler als Team Hell angezeigt.</p>
+          <p>Die beiden Spieler, die jeweils eine rote 6 besitzen, bilden das Team Angriff. Die Teamzugehörigkeit ist zunächst geheim und wird sichtbar, sobald ein Spieler eine rote 6 ausspielt. Sobald beide roten 6er gespielt wurden, werden die beiden übrigen Spieler als Team Abwehr angezeigt.</p>
         </section>
         <section>
           <h3>Aufträge und Siegpunkte</h3>
@@ -195,6 +195,6 @@
       </div>
     </div>
   </div>
-  <script src="/static/app.js?v=settings-1"></script>
+  <script src="/static/app.js?v=start-player-marker-1"></script>
 </body>
 </html>

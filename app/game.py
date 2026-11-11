@@ -13,7 +13,9 @@ from .goals import Goal, load_goals
 
 SUITS = ("Rot", "Grün", "Blau", "Gelb")
 RANKS = ("1", "2", "3", "4", "5")
+SPECIAL_RANKS = ("6", "7")
 PLAYER_NAMES = ("Du", "Anna", "Ben", "Clara")
+TEAM_NAMES = ("Angriff", "Abwehr")
 MAX_ROUNDS = 4
 
 
@@ -34,7 +36,7 @@ class Card:
 
     @property
     def points(self) -> int:
-        if self.suit == "Schwarz":
+        if self.rank in SPECIAL_RANKS:
             return 0
         return {"1": 3, "2": 2, "3": 1, "4": 0, "5": 0}[self.rank]
 
@@ -52,8 +54,8 @@ def make_deck() -> list[Card]:
         for rank in RANKS
         for copy in (1, 2)
     ] + [
-        Card(f"sc-{rank}-{copy}", "Schwarz", rank)
-        for rank in ("6", "7")
+        Card(f"Ro-{rank}-{copy}", "Rot", rank)
+        for rank in SPECIAL_RANKS
         for copy in (1, 2)
     ]
 
@@ -64,10 +66,10 @@ def is_trump(
     trick_number: int | None = None,
 ) -> bool:
     if event_id == "silence" and (trick_number is None or trick_number <= 3):
-        return card.suit == "Schwarz"
+        return card.suit == "Rot" and card.rank in SPECIAL_RANKS
     if event_id == "balance":
-        return card.suit == "Schwarz"
-    return card.suit in ("Schwarz", "Rot")
+        return card.suit == "Rot" and card.rank in SPECIAL_RANKS
+    return card.suit == "Rot"
 
 
 def card_category(
@@ -77,7 +79,7 @@ def card_category(
     trick_number: int | None = None,
 ) -> str:
     if event_id == "silence" and (trick_number is None or trick_number <= 3):
-        return "trump" if card.suit == "Schwarz" else "suit"
+        return "trump" if card.suit == "Rot" and card.rank in SPECIAL_RANKS else "suit"
     if is_trump(card, event_id, trick_number):
         return "trump"
     if lead and not is_trump(lead, event_id, trick_number) and card.suit == lead.suit:
@@ -145,8 +147,8 @@ class Game:
     last_message: str = ""
     history: list[str] = field(default_factory=list)
     teams: list[int] = field(default_factory=lambda: [0, 1, 0, 1])
-    revealed_black_players: set[int] = field(default_factory=set)
-    played_black_players: set[int] = field(default_factory=set)
+    revealed_red_six_players: set[int] = field(default_factory=set)
+    played_red_six_players: set[int] = field(default_factory=set)
     last_trick: list[TrickCard] = field(default_factory=list)
     last_trick_winner: int | None = None
     prophecy_cards: list[Card | None] = field(default_factory=lambda: [None] * 4)
@@ -212,30 +214,30 @@ class Game:
         self.trick_winners = []
         self.round_result = None
         self.match_finished = False
-        # Die beiden schwarzen 6er definieren Team Schwarz.
+        # Die beiden roten 6er definieren das Angriffsteam.
         # Neu mischen, falls beide 6er beim gleichen Spieler landen.
         while True:
             deck = make_deck()
             random.shuffle(deck)
             hands = [deck[i * 11 : (i + 1) * 11] for i in range(4)]
-            black_six_holders = {
+            red_six_holders = {
                 player
                 for player, hand in enumerate(hands)
-                if any(card.suit == "Schwarz" and card.rank == "6" for card in hand)
+                if any(card.suit == "Rot" and card.rank == "6" for card in hand)
             }
-            if len(black_six_holders) == 2:
+            if len(red_six_holders) == 2:
                 break
         self.hands = [
-            sorted(hand, key=lambda c: (c.suit != "Schwarz", c.suit, int(c.rank)))
+            sorted(hand, key=lambda c: (c.suit != "Rot", c.suit, int(c.rank)))
             for hand in hands
         ]
-        self.teams = [0 if player in black_six_holders else 1 for player in range(4)]
+        self.teams = [0 if player in red_six_holders else 1 for player in range(4)]
         self.current_player = self.start_player
         self.trick = []
         self.last_trick = []
         self.last_trick_winner = None
-        self.revealed_black_players = set()
-        self.played_black_players = set()
+        self.revealed_red_six_players = set()
+        self.played_red_six_players = set()
         self.prophecy_cards = [None] * 4
         self.prophecy_selected = [False] * 4
         self.revelation_cards = [None] * 4
@@ -255,7 +257,7 @@ class Game:
         self.history = [
             f"Partie {self.round_number} gestartet.",
             *([f"Event: {self.event.name}."] if self.event else []),
-            f"Startspieler: {self.player_names[self.start_player]}.",
+            f"Startspieler dieser Partie: {self.player_names[self.start_player]}.",
             setup_message,
         ]
         self._choose_automated_prophecy_cards()
@@ -309,8 +311,8 @@ class Game:
             if self._is_concealed_event_card(play_order, trick_number)
         ]
         for _, played in concealed:
-            if played.card.suit == "Schwarz" and played.card.rank == "6":
-                self._reveal_black_player(played.player)
+            if played.card.suit == "Rot" and played.card.rank == "6":
+                self._reveal_red_six_player(played.player)
         if not concealed:
             return
 
@@ -349,10 +351,10 @@ class Game:
             return self.pending_next_leader
         return self.pending_reveal_player
 
-    def _reveal_black_player(self, player: int) -> None:
-        if player not in self.revealed_black_players:
-            self.revealed_black_players.add(player)
-            self.history.append(f"{self.player_names[player]} ist Team Schwarz.")
+    def _reveal_red_six_player(self, player: int) -> None:
+        if player not in self.revealed_red_six_players:
+            self.revealed_red_six_players.add(player)
+            self.history.append(f"{self.player_names[player]} ist im Team {TEAM_NAMES[0]}.")
 
     def _choose_ai_public_card(self, player: int) -> Card:
         """Choose a low-risk card for an AI player to reveal publicly."""
@@ -417,10 +419,10 @@ class Game:
             for seat, chosen_card in enumerate(self.prophecy_cards):
                 if (
                     chosen_card is not None
-                    and chosen_card.suit == "Schwarz"
+                    and chosen_card.suit == "Rot"
                     and chosen_card.rank == "6"
                 ):
-                    self._reveal_black_player(seat)
+                    self._reveal_red_six_player(seat)
 
     def choose_next_leader(self, player: int, next_player: int) -> None:
         if self.event_id != "wandering_throne" or self.pending_next_leader != player:
@@ -447,8 +449,8 @@ class Game:
         self.history.append(
             f"{self.player_names[player]} zeigt offen {card.rank} {card.suit}."
         )
-        if card.suit == "Schwarz" and card.rank == "6":
-            self._reveal_black_player(player)
+        if card.suit == "Rot" and card.rank == "6":
+            self._reveal_red_six_player(player)
         self.last_message = f"{self.player_names[player]} hat eine Karte offen gezeigt."
 
     def choose_ai_event_action(self, player: int) -> None:
@@ -504,12 +506,12 @@ class Game:
         self.event = event
         # No card has been played yet, so any public team discovery must have
         # come from the old prophecy setup and is no longer applicable.
-        self.revealed_black_players.clear()
-        self.played_black_players.clear()
+        self.revealed_red_six_players.clear()
+        self.played_red_six_players.clear()
         self.history = [
             item for item in self.history
             if "zeigt für die Prophezeiung" not in item
-            and "ist Team Schwarz." not in item
+            and f"ist im Team {TEAM_NAMES[0]}." not in item
         ]
         self.pending_next_leader = None
         self.pending_reveal_player = None
@@ -708,10 +710,10 @@ class Game:
         if self.revelation_cards[player] is not None and self.revelation_cards[player].id == card.id:
             self.revelation_cards[player] = None
             self.blocked_lead_card_ids[player] = None
-        if card.suit == "Schwarz" and card.rank == "6":
-            self.played_black_players.add(player)
+        if card.suit == "Rot" and card.rank == "6":
+            self.played_red_six_players.add(player)
             if not hidden:
-                self._reveal_black_player(player)
+                self._reveal_red_six_player(player)
 
         if len(self.trick) < 4:
             self.current_player = (player + 1) % 4
@@ -777,6 +779,7 @@ class Game:
         self.round_result = {
             "round_number": self.round_number,
             "team_scores": team_scores,
+            "team_names": TEAM_NAMES,
             "winning_team": winning_team,
             "player_scores": self.scores[:],
             "match_scores": self.match_scores[:],
@@ -919,10 +922,19 @@ class Game:
 
             red_trumps = [card for card in legal if card.suit == "Rot" and self._is_trump(card)]
             if red_trumps:
-                return min(red_trumps, key=lambda card: self._card_value(card))
+                non_revealing_trumps = [
+                    card for card in red_trumps if card.rank != "6"
+                ]
+                return min(
+                    non_revealing_trumps or red_trumps,
+                    key=lambda card: self._card_value(card),
+                )
 
-            non_black = [card for card in legal if card.suit != "Schwarz"]
-            return min(non_black or legal, key=lambda card: self._card_value(card))
+            non_revealing = [
+                card for card in legal
+                if not (card.suit == "Rot" and card.rank == "6")
+            ]
+            return min(non_revealing or legal, key=lambda card: self._card_value(card))
 
         lead = self.trick[0].card
         best_player, best_card = self._current_trick_winner()
@@ -985,20 +997,19 @@ class Game:
 
     def known_teammate(self, player: int) -> int | None:
         """Gibt nur einen Partner zurück, den der Spieler regelkonform kennt."""
-        has_black_six = any(
-            card.suit == "Schwarz" and card.rank == "6"
+        has_red_six = any(
+            card.suit == "Rot" and card.rank == "6"
             for card in self.hands[player]
-        ) or player in self.played_black_players or player in self.revealed_black_players
+        ) or player in self.played_red_six_players or player in self.revealed_red_six_players
 
-        if has_black_six:
-            known_black_partners = self.revealed_black_players - {player}
-            return min(known_black_partners) if known_black_partners else None
+        if has_red_six:
+            known_red_six_partners = self.revealed_red_six_players - {player}
+            return min(known_red_six_partners) if known_red_six_partners else None
 
-        # Erst wenn beide schwarzen 6er offen liegen, ist für Team Hell
-        # der andere Nicht-Schwarz-Spieler eindeutig bekannt.
-        if len(self.revealed_black_players) == 2:
-            known_black = set(self.revealed_black_players)
-            possible_partners = set(range(4)) - known_black - {player}
+        # Sind beide roten 6er bekannt, ist der Partner im Gegenteam eindeutig.
+        if len(self.revealed_red_six_players) == 2:
+            known_red_sixes = set(self.revealed_red_six_players)
+            possible_partners = set(range(4)) - known_red_sixes - {player}
             if len(possible_partners) == 1:
                 return next(iter(possible_partners))
         return None
@@ -1140,8 +1151,8 @@ class Game:
                     "winner": self.last_trick_winner == played.player if not self.trick else False,
                 })
         team_status = [
-            "black" if player in self.revealed_black_players
-            else "white" if len(self.revealed_black_players) == 2
+            "attack" if player in self.revealed_red_six_players
+            else "defense" if len(self.revealed_red_six_players) == 2
             else "unknown"
             for player in range(4)
         ]
@@ -1155,6 +1166,7 @@ class Game:
             "round_number": self.round_number,
             "max_rounds": MAX_ROUNDS,
             "event": self.event_view(),
+            "team_names": TEAM_NAMES,
             "settings": {
                 "use_goals": self.use_goals,
                 "use_events": self.use_events,
@@ -1162,7 +1174,7 @@ class Game:
             "start_player": self.start_player,
             "start_player_name": self.player_names[self.start_player],
             "player_names": self.player_names,
-            "revealed_black_players": sorted(self.revealed_black_players),
+            "revealed_red_six_players": sorted(self.revealed_red_six_players),
             "team_status": team_status,
             "result": result,
             "goal_selection_required": self.use_goals and self.selected_goals[player] is None,

@@ -28,12 +28,13 @@ vier Browser verteilt.
 ## Enthalten
 
 - 44 Karten, vier Spieler, elf Karten pro Spieler
+- Rot, Grün, Blau und Gelb als Farben; Rot enthält Werte von 1 bis 7
 - vereinfachte Stichlogik
-- Schwarz und Rot als Trumpf
+- Rot als Trumpf
 - Kartenfarben werden als farbige Karten dargestellt, ohne Farbsymbole
 - Computer-Spieler heißen Anna, Ben und Clara
-- Die beiden schwarzen 6er bilden ein gemeinsames Team
-- Kartenwerte: 1 = 3 Punkte, 2 = 2 Punkte, 3 = 1 Punkt, 4/5 und Schwarz = 0 Punkte
+- Die beiden roten 6er bilden Team Angriff; die übrigen Spieler Team Abwehr
+- Kartenwerte: 1 = 3 Punkte, 2 = 2 Punkte, 3 = 1 Punkt, 4 bis 7 = 0 Punkte
 - Computer spielen mit zweisekündiger Verzögerung
 - Die Computer-KI spielt beim Anspiel bevorzugt 5er-Farbkarten,
   übernimmt Trumpfstiche mit dem knapp ausreichenden Trumpf und schützt
@@ -44,8 +45,11 @@ vier Browser verteilt.
 - Erfüllte Aufträge werden sofort aufgedeckt und geben Siegpunkte.
 - Ein Match umfasst vier Partien; ein Partiegewinn gibt jedem Spieler des
   Gewinnerteams zwei zusätzliche Siegpunkte.
-- `assets/cards/cards.xlsx` enthält die Auftragsdefinitionen und die im Code
-  verwendeten Auftragsnamen.
+- Pro Partie wird eines von fünf implementierten globalen Events ausgelost.
+  Innerhalb eines Matches wird kein Event wiederholt. Aktuell enthalten:
+  Sturm, Ernte, Aufstand, Zyklus und Balance.
+- `assets/cards/cards.xlsx` enthält die Auftragsdefinitionen sowie Namen,
+  IDs und Effekttexte der Events.
 - Bedienpflicht für Farbe bzw. Trumpf
 - einfache Computergegner
 - Spielstand und Ereignisprotokoll
