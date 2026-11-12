@@ -1,0 +1,203 @@
+# BILDERSTELLUNGSPROMPT – COSMIC CONSTELLATIONS
+## Premium-Kartenspiel: Spielkarten-Vorderseiten
+
+Erstelle ein professionelles, produktionsorientiertes Template für vier vollständig spielbare Spielkarten-Vorderseiten eines modernen strategischen Stichkartenspiels. Sowie daneben eine Auflistung an Rangzahlen von 1 bis 7, sowie eine Auswahl an Wertungssymbolen die später in die Templates eingesetzt werden können. Das Design ist für ein hochwertiges physisches Tabletop-Kartenspiel vorgesehen. Es soll wie ein fertiges, tatsächlich verwendbares Spielkartenprodukt aussehen – nicht wie ein Konzeptentwurf, eine Stilcollage, ein Poster oder eine Präsentationsgrafik.
+
+Wichtig die vier sichtbaren Karten sind Templates und dürfen werden Rangzahlen noch Wertigkeitsymbole enthalten.
+
+## 1. DESIGNTHEMA UND VISUELLE IDENTITÄT
+
+**THEMA: COSMIC CONSTELLATIONS – KOSMISCHE STERNBILDER**
+
+Die gestalterische Welt basiert auf dem Weltraum, astronomischen Phänomenen und mystischen Sternbildern.
+
+Verwende eine moderne, hochwertige Science-Fiction-Ästhetik mit folgenden Gestaltungselementen:
+
+- Tiefe Weltraumlandschaften mit dunklen, atmosphärischen Hintergründen.
+- Leuchtende Nebel, Galaxien und kosmische Gaswolken.
+- Präzise geometrische Sternbilder und verbundene Sternpunkte.
+- Feine, aber ausreichend kräftige Umlaufbahnen und astronomische Kreisdiagramme.
+- Planeten, Monde, Sternensysteme und kosmische Energiezentren.
+- Abstrakte astronomische Symbole und stilisierte Konstellationen.
+- Dezente holografische Akzente und kontrollierte metallische Highlights.
+- Klare, moderne geometrische Rahmen und präzise grafische Strukturen.
+
+Die Ästhetik soll hochwertig, geheimnisvoll, elegant und zeitgemäß wirken. Orientiere dich an der visuellen Qualität eines Premium-Tabletop-Spiels mit eigenständiger künstlerischer Identität.
+
+Vermeide:
+- Traditionelle Pergamentoptik.
+- Mittelalterliche Heraldik.
+- Barocke Verzierungen.
+- Klassische Spielkartenornamente.
+- Überladene Fantasy-Illustrationen.
+- Übertriebene Leuchteffekte, die die Lesbarkeit beeinträchtigen.
+- Fotorealistische Weltraumfotografien als alleinige Gestaltung.
+- Unruhige Hintergründe hinter wichtigen Spielinformationen.
+
+Die Karten sollen trotz ihrer kosmischen Illustrationen auf den ersten Blick als funktionale Spielkarten erkennbar sein.
+
+## 2. EXAKTER KARTENBESTAND
+
+Erstelle genau vier unterschiedliche Kartenfronten. Keine weiteren Karten hinzufügen.
+
+Die vier Karten müssen Template ohne Rangzahl und Augenwert sein. Jedoch mit identischen Layout.
+
+**KARTE 1 – ROT**
+- Kartenfarbe: kräftiges, eindeutig erkennbares Rot.
+- Eigenständige kosmische Illustration: ein rotes Sternbild in Form eines majestätischen kosmischen Widders, eingebettet in einen roten Nebel mit Planeten und geometrischen Umlaufbahnen.
+- Das Sternbild soll aus klar erkennbaren Sternpunkten und verbindenden Linien bestehen.
+
+**KARTE 2 – GRÜN**
+- Kartenfarbe: kräftiges, eindeutig erkennbares Grün.
+- Eigenständige kosmische Illustration: ein markantes grünes Sternbild in einer grünen Weltraumlandschaft mit Monden, Planeten und einer großen, geometrisch verbundenen Sternenkonstellation.
+- Die Galaxie soll als klares zentrales Motiv funktionieren.
+
+**KARTE 3 – BLAU**
+- Kartenfarbe: kräftiges, eindeutig erkennbares Blau.
+- Eigenständige kosmische Illustration: ein markantes blaues Sternbild in einer tiefblauen Weltraumlandschaft mit Monden, Planeten und einer großen, geometrisch verbundenen Sternenkonstellation.
+
+**KARTE 4 – GELB**
+- Kartenfarbe: leuchtendes Goldgelb.
+- Eigenständige kosmische Illustration: ein majestätisches goldenes Sternbild in Form eines stilisierten Phönix, bestehend aus präzise angeordneten, hell leuchtenden Sternpunkten und geometrischen Verbindungslinien.
+Der Phönix soll mit ausgebreiteten Flügeln dargestellt werden und aus einer goldenen kosmischen Nebelwolke aufsteigen.
+Ergänze dezente astronomische Umlaufbahnen, kleine Sterne und geometrische Sternenkonstellationen im Hintergrund.
+
+
+## 3. SPIELKARTEN-HIERARCHIE UND LESBARKEIT
+
+Die Spielinformationen haben absolute Priorität gegenüber der dekorativen Gestaltung.
+
+Die finale Karte (nach dem manuellen einfügen der Rangzahl und Augenwert) muss auf normale Tischentfernung sofort folgende Informationen vermitteln:
+1. Kartenfarbe beziehungsweise Symbolfarbe.
+2. Rangzahl.
+3. Augenwert.
+
+Die Rangzahl ist das wichtigste Informationselement.
+
+Rangzahl benötigt Platz prominent in allen vier Kartenecken:
+- Oben links: aufrecht.
+- Oben rechts: aufrecht.
+- Unten links: um 180 Grad gedreht.
+- Unten rechts: um 180 Grad gedreht.
+
+Alle vier Zahlen müssen dieselbe Schriftart, Größe, Stärke und Positionierung aufweisen. Die beiden unteren Zahlen müssen tatsächlich kopfstehend dargestellt werden.
+
+Verwende eine kräftige, moderne, serifenlose Schrift mit klar unterscheidbaren Ziffern. Die Zahlen müssen groß, geschlossen und aus normaler Betrachtungsentfernung gut lesbar sein.
+
+Die Eckindizes müssen bei allen fünf Karten identisch aufgebaut sein.
+
+Wichtig die vier sichtbaren Karten sind Templates und dürfen werden Rangzahlen noch Wertigkeitsymbole enthalten. Die Beschreibung dient nur zur Information wo Platz dafür gelassen werden muss.
+
+## 4. WERTUNGSSYMBOLE
+
+Entwickle ein einheitliches, leicht erkennbares kosmisches Wertungssymbol.
+
+Es muss:
+- Auf allen Karten identisch aussehen.
+- Eine klare, einfache Silhouette besitzen.
+- In kleiner Druckgröße eindeutig erkennbar bleiben.
+- Einen hohen Kontrast zum Hintergrund aufweisen.
+- Visuell zur kosmischen Gestaltung passen.
+
+Platziere die Wertungssymbole in einem eigenen, klar abgegrenzten Wertungsbereich im unteren Kartenbereich.
+
+Die Symbole müssen horizontal und gleichmäßig angeordnet sein. Bei null Augen darf kein Wertungssymbol erscheinen.
+
+Keine zusätzlichen Sterne, Rauten oder dekorativen Elemente im Wertungsbereich verwenden, die mit den eigentlichen Wertungssymbolen verwechselt werden könnten.
+
+Die Anzahl der Wertungssymbole muss ohne Nachzählen oder Interpretieren sofort erkennbar sein.
+
+## 5. ILLUSTRATIONEN
+
+Die Karte erhält eine eigene zentrale kosmische Illustration.
+
+Die Illustrationen sollen:
+- Die jeweilige Kartenfarbe visuell aufgreifen.
+- Ein klares, unverwechselbares Hauptmotiv besitzen.
+- Sternbilder mit verbundenen Sternpunkten verwenden.
+- Astronomische Geometrie und Umlaufbahnen integrieren.
+- Einen deutlichen Vordergrund-Hintergrund-Kontrast aufweisen.
+- In einer reduzierten, hochwertigen Grafikstilistik gestaltet sein.
+- Genügend Freiraum für die Spielinformationen lassen.
+
+Die Illustrationen dürfen niemals die Eckzahlen, Suit-Symbole oder Wertungsbereiche überlagern.
+
+## 6. PHYSISCHE KARTENGESTALTUNG
+
+Erstelle echte, flache Spielkarten-Vorderseiten.
+
+Technische Anforderungen:
+
+- Hochformat.
+- 63 mm breit und 88 mm hoch.
+- Identische Kartenabmessungen.
+- Einheitliche Ecken und Rahmen.
+- Einheitliche Positionierung aller Spielinformationen.
+- Gerade, orthogonale Frontalansicht.
+- Keine perspektivische Verzerrung.
+- Keine schräg liegenden Karten.
+- Keine Rückseiten.
+- Keine 3D-Darstellung.
+- Keine Schatten oder schwebenden Effekte.
+- Keine fotografische Inszenierung.
+
+Verwende einen klaren, modernen Kartenrahmen mit ausreichend kräftiger Kontur.
+
+Alle wichtigen Informationen müssen innerhalb einer großzügigen inneren Sicherheitszone liegen.
+
+Berücksichtige bei der Druckvorbereitung einen separaten Beschnitt von 3 mm über die spätere Schnittkante hinaus. Die Beschnittzugabe darf nicht mit dem eigentlichen Kartenformat verwechselt werden.
+
+Gestalte für professionellen CMYK-Druck auf blickdichtem Spielkartenkarton.
+
+Verwende:
+- Klare Farbflächen.
+- Saubere Vektorkonturen.
+- Druckstabile Linienbreiten.
+- Hohe Kontraste.
+- Geschlossene Formen.
+- Keine Transparenz als notwendige Informationsebene.
+- Keine subtilen Bildschirm-Leuchteffekte als Voraussetzung für die Erkennbarkeit.
+
+## 7. AUSGABEKOMPOSITION
+
+Zeige genau vier Kartenfronten. Aufgeitelt in zwei Reihen und Spalten. Rechts daneben die Auswahl an Zahlen und Wertigkeitssymbolen, damit diese später über die Templates gelegt werden können.
+
+Wichtig die vier sichtbaren Karten sind Templates und dürfen werden Rangzahlen noch Wertigkeitsymbole enthalten.
+
+Anordnung:
+- Keine Überlappungen.
+- Jede Karte vollständig sichtbar.
+- Jede Karte muss unabhängig und sauber ausschneidbar sein.
+
+Hintergrund der Gesamtkomposition: neutrales, helles Grau ohne Muster und ohne dekorative Elemente.
+
+Der Hintergrund darf ausschließlich der Trennung der fünf Karten dienen. Er ist kein Bestandteil des Kartendesigns.
+
+## 8. ABSOLUTE AUSSCHLUSSKRITERIEN
+
+Nicht zulässig sind:
+
+- Zusätzliche Karten.
+- Zusätzliche Zahlen innerhalb der Illustrationen.
+- Zusätzliche Texte oder Beschriftungen.
+- Kartennamen.
+- Spielregeln.
+- Logos.
+- Wasserzeichen.
+- Karten-IDs.
+- Pseudo-Schrift.
+- Unleserliche Glyphen.
+- Dekorative Zahlen, die als Spielwerte missverstanden werden könnten.
+- Kartenrückseiten.
+- Hände, Spielfiguren oder andere Gegenstände.
+- Spieltisch, Verpackungen oder Mockup-Elemente.
+- Perspektivische Darstellung.
+- Präsentationsboards oder Posterdesigns.
+
+## 10. QUALITÄTSZIEL
+
+Das Endergebnis soll wie ein professionell entwickeltes Premium-Kartenspiel aussehen, das unmittelbar für einen physischen Spielprototyp verwendet werden könnte.
+
+Die wichtigste Priorität lautet:
+
+**Spielbarkeit vor Dekoration. Lesbarkeit vor Effekten. Konsistenz vor Komplexität.**
